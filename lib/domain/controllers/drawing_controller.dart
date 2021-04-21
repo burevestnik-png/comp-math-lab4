@@ -1,4 +1,3 @@
-import 'package:comp_math_lab3/domain/models/equation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

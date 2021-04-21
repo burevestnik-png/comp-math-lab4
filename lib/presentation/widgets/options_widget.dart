@@ -1,10 +1,3 @@
-import 'package:comp_math_lab3/domain/models/equation.dart';
-import 'package:comp_math_lab3/domain/models/methods/method.dart';
-import 'package:comp_math_lab3/domain/state/main_screen_state.dart';
-import 'package:comp_math_lab3/presentation/styles/text_styles.dart';
-import 'package:comp_math_lab3/presentation/widgets/option_dropdown_widget.dart';
-import 'package:comp_math_lab3/presentation/widgets/option_logger_widget.dart';
-import 'package:comp_math_lab3/presentation/widgets/option_textfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';

@@ -1,4 +1,3 @@
-import 'package:comp_math_lab3/domain/models/tokens/token.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class Equation {

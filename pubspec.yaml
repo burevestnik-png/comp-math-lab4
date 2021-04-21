@@ -15,7 +15,6 @@ dependencies:
   fl_chart: ^0.35.0
   cupertino_icons: ^1.0.2
   get: ^4.1.1
-  flutter_easyloading: ^3.0.0
   animated_splash_screen: ^1.1.0
 
 

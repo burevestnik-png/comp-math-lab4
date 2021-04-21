@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:comp_math_lab4/domain/controllers/drawing_controller.dart';
+import 'package:comp_math_lab4/domain/models/equation.dart';
+import 'package:comp_math_lab4/domain/models/tokens/const_token.dart';
+import 'package:comp_math_lab4/domain/models/tokens/polynomial_token.dart';
+import 'package:comp_math_lab4/domain/state/state.dart';
 import 'package:get/get.dart';
 
 class MainScreenState extends IState {

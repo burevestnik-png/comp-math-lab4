@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:comp_math_lab4/domain/models/tokens/linear_token.dart';
+import 'package:comp_math_lab4/domain/models/tokens/token.dart';
+
 class PolynomialToken extends Token {
   final Token _token;
   final double _power;

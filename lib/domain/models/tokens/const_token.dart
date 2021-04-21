@@ -1,3 +1,5 @@
+import 'package:comp_math_lab4/domain/models/tokens/token.dart';
+
 class ConstToken extends Token {
   ConstToken(double factor) : super(factor);
 

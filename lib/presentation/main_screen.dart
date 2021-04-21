@@ -1,3 +1,6 @@
+import 'package:comp_math_lab4/domain/controllers/drawing_controller.dart';
+import 'package:comp_math_lab4/domain/state/main_screen_state.dart';
+import 'package:comp_math_lab4/presentation/widgets/options_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

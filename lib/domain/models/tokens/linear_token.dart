@@ -1,3 +1,5 @@
+import 'package:comp_math_lab4/domain/models/tokens/token.dart';
+
 class LinearToken extends Token {
   LinearToken(double factor) : super(factor);
 

@@ -1,3 +1,6 @@
+import 'package:comp_math_lab4/domain/controllers/drawing_controller.dart';
+import 'package:comp_math_lab4/domain/controllers/log_controller.dart';
+import 'package:comp_math_lab4/domain/state/main_screen_state.dart';
 import 'package:get/get.dart';
 
 class GlobalBindings extends Bindings {

@@ -1,3 +1,5 @@
+import 'package:comp_math_lab4/domain/controllers/log_controller.dart';
+import 'package:comp_math_lab4/presentation/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

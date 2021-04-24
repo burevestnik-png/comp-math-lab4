@@ -24,6 +24,11 @@ class Options extends GetView<MainScreenState> {
         children: [
           OptionTableData(),
           Divider(),
+          ElevatedButton(
+            child: Text("Compute"),
+            onPressed: () => controller.compute(),
+          ),
+          Divider(),
           OptionLogger(),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:comp_math_lab4/domain/controllers/computation_controller.dart';
 import 'package:comp_math_lab4/domain/controllers/drawing_controller.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/models/equation.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 
 class MainScreenState extends IState {
   final _drawingController = Get.find<DrawingController>();
+  final _computationController = Get.find<ComputationController>();
 
   final equations = <Equation>[
     Equation([
@@ -33,10 +35,21 @@ class MainScreenState extends IState {
   final selectedDots = <Dot>[].obs;
 
   final dots = <Dot>[
-    Dot(1, 1),
-    Dot(1, 1),
-    Dot(1, 1),
+    Dot(1.2, 7.4),
+    Dot(2.9, 9.5),
+    Dot(4.1, 11.1),
+    Dot(5.5, 12.9),
+    Dot(6.7, 14.6),
+    Dot(7.8, 17.3),
+    Dot(9.2, 18.2),
+    Dot(10.3, 20.7),
   ].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    redrawGraph();
+  }
 
   void addDot(double x, double y) {
     dots.add(Dot(x, y));
@@ -66,5 +79,9 @@ class MainScreenState extends IState {
 
   void redrawGraph() {
     _drawingController.drawTableGraph(dots.toList());
+  }
+
+  void compute() {
+    _computationController.approximate(dots.toList());
   }
 }

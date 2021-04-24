@@ -37,4 +37,34 @@ class MainScreenState extends IState {
     Dot(1, 1),
     Dot(1, 1),
   ].obs;
+
+  void addDot(double x, double y) {
+    dots.add(Dot(x, y));
+    dots.sort((first, second) => first.x.compareTo(second.x));
+    redrawGraph();
+  }
+
+  void deleteSelectedDots() {
+    if (selectedDots.isNotEmpty) {
+      var tmpDots = <Dot>[].obs;
+
+      tmpDots.addAll(selectedDots);
+      for (Dot dot in tmpDots) {
+        dots.remove(dot);
+        selectedDots.remove(dot);
+      }
+
+      redrawGraph();
+    }
+  }
+
+  void deleteAllDots() {
+    selectedDots.clear();
+    dots.clear();
+    redrawGraph();
+  }
+
+  void redrawGraph() {
+    _drawingController.drawTableGraph(dots.toList());
+  }
 }

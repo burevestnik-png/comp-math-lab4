@@ -51,6 +51,17 @@ class DrawingController extends GetxController {
   ) {
     if (_lines.asMap().containsKey(_kTableGraphPlace))
       _lines.removeAt(_kTableGraphPlace);
+
+    _lines.insert(
+      _kTableGraphPlace,
+      LineChartBarData(
+        spots: dots.toFLSpots(),
+        isCurved: true,
+        dotData: FlDotData(
+          show: false,
+        ),
+      ),
+    );
   }
 
   void drawGraph(

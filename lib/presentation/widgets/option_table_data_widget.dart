@@ -1,4 +1,3 @@
-import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/state/main_screen_state.dart';
 import 'package:comp_math_lab4/presentation/styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,24 +74,10 @@ class OptionTableData extends GetView<MainScreenState> {
   }
 
   Widget _createTableButtons() {
-    bool isButtonDisabled() => controller.selectedDots.length == 0;
+    bool isDeleteSelectedButtonDisabled() =>
+        controller.selectedDots.length == 0;
 
-    void deleteSelectedRows() {
-      if (controller.selectedDots.isNotEmpty) {
-        var tmpDots = <Dot>[].obs;
-
-        tmpDots.addAll(controller.selectedDots);
-        for (Dot dot in tmpDots) {
-          controller.dots.remove(dot);
-          controller.selectedDots.remove(dot);
-        }
-      }
-    }
-
-    void deleteAllRows() {
-      controller.selectedDots.clear();
-      controller.dots.clear();
-    }
+    bool isDeleteAllButtonDisabled() => controller.dots.length == 0;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -100,14 +85,17 @@ class OptionTableData extends GetView<MainScreenState> {
         Obx(
           () => ElevatedButton(
             child: Text("Delete all (${controller.dots.length})"),
-            onPressed: deleteAllRows,
+            onPressed:
+                isDeleteAllButtonDisabled() ? null : controller.deleteAllDots,
           ),
         ),
         SizedBox(width: 30),
         Obx(
           () => ElevatedButton(
             child: Text("Delete ${controller.selectedDots.length} items"),
-            onPressed: isButtonDisabled() ? null : deleteSelectedRows,
+            onPressed: isDeleteSelectedButtonDisabled()
+                ? null
+                : controller.deleteSelectedDots,
           ),
         ),
       ],
@@ -120,7 +108,7 @@ class OptionTableData extends GetView<MainScreenState> {
       var y = double.tryParse(yController.text);
 
       if (x != null && y != null) {
-        controller.dots.add(Dot(x, y));
+        controller.addDot(x, y);
       }
     }
 

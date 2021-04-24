@@ -3,27 +3,59 @@ import 'dart:math';
 import 'package:comp_math_lab4/domain/approximations/approximation.dart';
 import 'package:comp_math_lab4/domain/math/linear_system_solver.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
+import 'package:comp_math_lab4/domain/models/equation.dart';
+import 'package:comp_math_lab4/domain/models/tokens/const_token.dart';
+import 'package:comp_math_lab4/domain/models/tokens/linear_token.dart';
 
 class LinearApproximation extends Approximation {
+  LinearApproximation() : super(Approximations.LINEAR);
+
   @override
-  void process(List<Dot> dots) {
-    double sx =
-        dots.fold(0.0, (previousValue, element) => previousValue + element.x);
+  double process(List<Dot> dots) {
+    double sx = sumByX(dots);
+    double sy = sumByY(dots);
+    double sxx = sumBySquaredX(dots);
+    double sxy = sumByXY(dots);
 
-    double sy =
-        dots.fold(0.0, (previousValue, element) => previousValue + element.y);
-
-    double sxx = dots.fold(
-        0.0, (previousValue, element) => previousValue + pow(element.x, 2));
-    double sxy = dots.fold(
-        0.0, (previousValue, element) => previousValue + element.x * element.y);
-
-    print('Solutions: ${LinearSystemSolver.compute([
+    var solutions = LinearSystemSolver.compute([
       [sxx, sx],
       [sx, dots.length.toDouble()]
     ], [
       sxy,
-      sy,
-    ])}');
+      sy
+    ]);
+
+    if (solutions == null) {
+      logger.println("No or unlimited solutions");
+      return -1;
+    }
+
+    final Equation phi = Equation([
+      LinearToken(solutions[0]),
+      ConstToken(solutions[1]),
+    ]);
+
+    double sumOfDeviationSquares = dots.fold(
+      0.0,
+      (previousValue, dot) =>
+          previousValue + pow(phi.compute(dot.x) - dot.y, 2),
+    );
+    print('Sun: $sumOfDeviationSquares');
+
+    double averageX = sx / dots.length.toDouble();
+    double averageY = sy / dots.length.toDouble();
+
+    double sumOfDiffXY = 0.0;
+    double sumOfDiffXSquared = 0.0;
+    double sumOfDiffYSquared = 0.0;
+    dots.forEach((dot) {
+      sumOfDiffXY += (dot.x - averageX) * (dot.y - averageY);
+      sumOfDiffXSquared += pow((dot.x - averageX), 2);
+      sumOfDiffYSquared += pow((dot.y - averageY), 2);
+    });
+    double r = sumOfDiffXY / sqrt(sumOfDiffYSquared * sumOfDiffXSquared);
+    print('R: $r');
+
+    return sqrt(sumOfDeviationSquares / dots.length.toDouble());
   }
 }

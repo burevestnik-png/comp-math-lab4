@@ -34,7 +34,7 @@ class MainScreenState extends IState {
 
   final selectedDots = <Dot>[].obs;
 
-  final dots = <Dot>[
+  /*final dots = <Dot>[
     Dot(1.2, 7.4),
     Dot(2.9, 9.5),
     Dot(4.1, 11.1),
@@ -43,6 +43,26 @@ class MainScreenState extends IState {
     Dot(7.8, 17.3),
     Dot(9.2, 18.2),
     Dot(10.3, 20.7),
+  ].obs;*/
+
+  /*final dots = <Dot>[
+    Dot(1.1, 3.5),
+    Dot(2.3, 4.1),
+    Dot(3.7, 5.2),
+    Dot(4.5, 6.9),
+    Dot(5.4, 8.3),
+    Dot(6.8, 14.8),
+    Dot(7.5, 21.2),
+  ].obs;*/
+
+  final dots = <Dot>[
+    Dot(1.1, 2.73),
+    Dot(2.3, 5.12),
+    Dot(3.7, 7.74),
+    Dot(4.5, 8.91),
+    Dot(5.4, 10.59),
+    Dot(6.8, 12.75),
+    Dot(7.5, 13.43),
   ].obs;
 
   @override

@@ -1,3 +1,4 @@
+import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/models/equation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class DrawingController extends GetxController {
 
   static const _kAxisXPlace = 0;
   static const _kAxisYPlace = 1;
-  static const _kEquationPlace = 2;
+  static const _kTableGraphPlace = 2;
 
   late final LineChartData chartData;
   late final List<LineChartBarData> _lines = [];
@@ -45,14 +46,21 @@ class DrawingController extends GetxController {
     );
   }
 
+  void drawTableGraph(
+    List<Dot> dots,
+  ) {
+    if (_lines.asMap().containsKey(_kTableGraphPlace))
+      _lines.removeAt(_kTableGraphPlace);
+  }
+
   void drawGraph(
     Equation equation, {
     double min = _kDefaultMin,
     double max = _kDefaultMax,
     double accuracy = 0.01,
   }) {
-    if (_lines.asMap().containsKey(_kEquationPlace))
-      _lines.removeAt(_kEquationPlace);
+    if (_lines.asMap().containsKey(_kTableGraphPlace))
+      _lines.removeAt(_kTableGraphPlace);
 
     /*if ((equation.min(min, max).y - chartData.minY).abs() > _kPaddingValue) {
       var previousMinY = chartData.minY;

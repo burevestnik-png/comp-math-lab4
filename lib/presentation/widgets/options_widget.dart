@@ -1,4 +1,5 @@
 import 'package:comp_math_lab4/domain/state/main_screen_state.dart';
+import 'package:comp_math_lab4/presentation/widgets/option_logger_widget.dart';
 import 'package:comp_math_lab4/presentation/widgets/option_table_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,8 @@ class Options extends GetView<MainScreenState> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           OptionTableData(),
+          Divider(),
+          OptionLogger(),
         ],
       ),
     );

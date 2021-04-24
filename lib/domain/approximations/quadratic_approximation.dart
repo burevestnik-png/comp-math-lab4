@@ -66,4 +66,39 @@ class QuadraticApproximation extends Approximation {
 
     return sqrt(sumOfDeviationSquares / dots.length.toDouble());
   }
+
+  @override
+  List<List<double>> createMatrix(List<Dot> dots) {
+    var sx = sumByX(dots);
+    var sxx = sumBySquaredX(dots);
+    var s3x = sumByCubedX(dots);
+    var s4x = sumByFourthDegreeX(dots);
+
+    return [
+      [dots.length.toDouble(), sx, sxx],
+      [sx, sxx, s3x],
+      [sxx, s3x, s4x]
+    ];
+  }
+
+  @override
+  List<double> createResultVector(List<Dot> dots) {
+    var sy = sumByY(dots);
+    var sxy = sumByXY(dots);
+    var sxxy = sumByYAndSquaredX(dots);
+
+    return [sy, sxy, sxxy];
+  }
+
+  @override
+  Equation createApproximatedFunction(List<double> factors) {
+    return Equation([
+      PolynomialToken.basicPos(
+        power: 2.0,
+        factor: factors.last,
+      ),
+      LinearToken(factors[1]),
+      ConstToken(factors.first),
+    ]);
+  }
 }

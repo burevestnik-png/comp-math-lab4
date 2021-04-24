@@ -58,4 +58,31 @@ class LinearApproximation extends Approximation {
 
     return sqrt(sumOfDeviationSquares / dots.length.toDouble());
   }
+
+  @override
+  List<List<double>> createMatrix(List<Dot> dots) {
+    var sx = sumByX(dots);
+    var sxx = sumBySquaredX(dots);
+
+    return [
+      [sxx, sx],
+      [sx, dots.length.toDouble()]
+    ];
+  }
+
+  @override
+  List<double> createResultVector(List<Dot> dots) {
+    var sy = sumByY(dots);
+    var sxy = sumByXY(dots);
+
+    return [sxy, sy];
+  }
+
+  @override
+  Equation createApproximatedFunction(List<double> factors) {
+    return Equation([
+      LinearToken(factors[0]),
+      ConstToken(factors[1]),
+    ]);
+  }
 }

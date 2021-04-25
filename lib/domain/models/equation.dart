@@ -3,7 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 
 class Equation {
   final List<Token> _tokens;
-  bool hasBreakpoints = false;
 
   Equation(List<Token> _tokens) : _tokens = _tokens;
 

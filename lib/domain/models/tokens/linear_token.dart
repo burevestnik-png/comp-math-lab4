@@ -11,5 +11,5 @@ class LinearToken extends Token {
   double compute(double x) => factor * x;
 
   @override
-  String toString() => '$factor * x';
+  String toString() => '${factor.withSign()} * x';
 }

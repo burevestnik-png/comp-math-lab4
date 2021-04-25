@@ -12,9 +12,9 @@ abstract class Token {
 extension WithSign on double {
   String withSign() {
     if (this.sign == 1) {
-      return "+$this";
+      return " + $this";
     } else if (this.sign == -1) {
-      return this.toString();
+      return " - ${this * -1}";
     } else
       return "$this";
   }

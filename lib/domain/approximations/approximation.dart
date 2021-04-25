@@ -21,18 +21,25 @@ abstract class Approximation {
   Approximation(this.type);
 
   double process(List<Dot> dots) {
-    var solutions = LinearSystemSolver.compute(
-        createMatrix(dots), createResultVector(dots));
+    var solutions = solveLinearSystem(dots);
     if (solutions == null) {
       logger.println("No solutions or unlimited solutions");
       return -1;
     }
+    print('Solutions: $solutions');
 
     final phi = createApproximatedFunction(solutions);
+    print('Phi: $phi');
     final sumOfDeviationSquares = calculateSumOfSquaredDeviations(dots, phi);
+    print('S: $sumOfDeviationSquares');
 
     return sqrt(sumOfDeviationSquares / dots.length.toDouble());
   }
+
+  List<double>? solveLinearSystem(List<Dot> dots) => LinearSystemSolver.compute(
+        createMatrix(dots),
+        createResultVector(dots),
+      );
 
   List<List<double>> createMatrix(List<Dot> dots);
 

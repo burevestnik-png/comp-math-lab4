@@ -7,5 +7,5 @@ class ConstToken extends Token {
   double compute(double x) => factor;
 
   @override
-  String toString() => factor.toString();
+  String toString() => factor.withSign();
 }

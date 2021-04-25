@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:comp_math_lab4/domain/models/tokens/linear_token.dart';
+import 'package:comp_math_lab4/domain/models/tokens/logarithmic_token.dart';
 import 'package:comp_math_lab4/domain/models/tokens/token.dart';
 
 class PolynomialToken extends Token {
@@ -18,6 +19,9 @@ class PolynomialToken extends Token {
     required double power,
     required double factor,
   }) : this(LinearToken.basic(), power, factor * (-1));
+
+  PolynomialToken.logarithmic(double factor)
+      : this(LogarithmicToken.basic(), 1.0, factor);
 
   @override
   double compute(double x) => factor * pow(_token.compute(x), _power);

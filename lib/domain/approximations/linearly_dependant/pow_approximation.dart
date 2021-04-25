@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:comp_math_lab4/domain/approximations/approximation.dart';
-import 'package:comp_math_lab4/domain/approximations/linear_convertable_interface.dart';
-import 'package:comp_math_lab4/domain/approximations/linearly_dependant_approximation.dart';
+import 'package:comp_math_lab4/domain/approximations/linearly_dependant/linear_convertible_interface.dart';
+import 'package:comp_math_lab4/domain/approximations/linearly_dependant/linearly_dependant_approximation.dart';
 import 'package:comp_math_lab4/domain/math/linear_system_solver.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/models/equation.dart';

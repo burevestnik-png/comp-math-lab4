@@ -14,7 +14,7 @@ class MainScreen extends GetView<MainScreenState> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Integral computation application"),
+        title: Text("Approximation computation application"),
       ),
       body: Row(
         children: [

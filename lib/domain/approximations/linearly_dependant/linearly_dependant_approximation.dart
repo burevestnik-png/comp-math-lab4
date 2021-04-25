@@ -6,12 +6,6 @@ import 'package:comp_math_lab4/domain/models/dot.dart';
 abstract class LinearlyDependantApproximation extends Approximation {
   LinearlyDependantApproximation(Approximations type) : super(type);
 
-  @override
-  void processDuring(List<Dot> dots) {
-    final r = calcPearsonCoefficient(dots);
-    print('r: $r');
-  }
-
   List<double>? solveLinearSystem(List<Dot> dots) {
     var modifiedDots = modifyDots(dots);
     return super.solveLinearSystem(modifiedDots);

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:comp_math_lab4/domain/approximations/approx_lifecycle_interface.dart';
+import 'package:comp_math_lab4/domain/controllers/computation_controller.dart';
 import 'package:comp_math_lab4/domain/controllers/log_controller.dart';
 import 'package:comp_math_lab4/domain/math/linear_system_solver.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
@@ -21,22 +22,27 @@ abstract class Approximation extends IApproxLifecycle {
 
   Approximation(this.type);
 
-  double process(List<Dot> dots) {
+  ApproximationResult process(List<Dot> dots) {
+    logger.println("Searching $type approx function");
+
     var solutions = solveLinearSystem(dots);
     if (solutions == null) {
       logger.println("No solutions or unlimited solutions");
-      return -1;
+      return ApproximationResult.empty();
     }
-    print('Solutions: $solutions');
+    logger.println("Solutions of SLE: $solutions");
 
     final phi = createApproximatedFunction(solutions);
-    print('Phi: $phi');
+    logger.println("Searched function: $phi");
     final sumOfDeviationSquares = calculateSumOfSquaredDeviations(dots, phi);
-    print('S: $sumOfDeviationSquares');
+    logger.println("S: $sumOfDeviationSquares");
 
     processDuring(dots);
 
-    return sqrt(sumOfDeviationSquares / dots.length.toDouble());
+    final standardDeviation =
+        sqrt(sumOfDeviationSquares / dots.length.toDouble());
+    logger.println("STD: $standardDeviation");
+    return ApproximationResult(standardDeviation, phi);
   }
 
   List<double>? solveLinearSystem(List<Dot> dots) => LinearSystemSolver.compute(

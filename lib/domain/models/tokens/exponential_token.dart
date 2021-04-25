@@ -11,5 +11,5 @@ class ExponentialToken extends Token {
   double compute(double x) => factor * pow(e, _power * x).toDouble();
 
   @override
-  String toString() => "${factor.withSign()} * e^($_power * x})";
+  String toString() => "${factor.withSign()} * e^($_power * x)";
 }

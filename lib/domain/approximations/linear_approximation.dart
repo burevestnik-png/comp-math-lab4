@@ -1,13 +1,14 @@
 import 'dart:math';
 
 import 'package:comp_math_lab4/domain/approximations/approximation.dart';
+import 'package:comp_math_lab4/domain/approximations/linearly_dependant_approximation.dart';
 import 'package:comp_math_lab4/domain/math/linear_system_solver.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/models/equation.dart';
 import 'package:comp_math_lab4/domain/models/tokens/const_token.dart';
 import 'package:comp_math_lab4/domain/models/tokens/linear_token.dart';
 
-class LinearApproximation extends Approximation {
+class LinearApproximation extends LinearlyDependantApproximation {
   LinearApproximation() : super(Approximations.LINEAR);
 
   @override
@@ -84,5 +85,22 @@ class LinearApproximation extends Approximation {
       LinearToken(factors[0]),
       ConstToken(factors[1]),
     ]);
+  }
+
+  @override
+  double calcPearsonCoefficient(List<Dot> dots) {
+    double averageX = sumByX(dots) / dots.length.toDouble();
+    double averageY = sumByY(dots) / dots.length.toDouble();
+
+    double sumOfDiffXY = 0.0;
+    double sumOfDiffXSquared = 0.0;
+    double sumOfDiffYSquared = 0.0;
+    dots.forEach((dot) {
+      sumOfDiffXY += (dot.x - averageX) * (dot.y - averageY);
+      sumOfDiffXSquared += pow((dot.x - averageX), 2);
+      sumOfDiffYSquared += pow((dot.y - averageY), 2);
+    });
+
+    return sumOfDiffXY / sqrt(sumOfDiffYSquared * sumOfDiffXSquared);
   }
 }

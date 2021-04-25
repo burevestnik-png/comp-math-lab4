@@ -28,13 +28,8 @@ abstract class Approximation {
       return -1;
     }
 
-    final Equation phi = createApproximatedFunction(solutions);
-
-    double sumOfDeviationSquares = dots.fold(
-      0.0,
-      (previousValue, dot) =>
-          previousValue + pow(phi.compute(dot.x) - dot.y, 2),
-    );
+    final phi = createApproximatedFunction(solutions);
+    final sumOfDeviationSquares = calculateSumOfSquaredDeviations(dots, phi);
 
     return sqrt(sumOfDeviationSquares / dots.length.toDouble());
   }
@@ -44,6 +39,12 @@ abstract class Approximation {
   List<double> createResultVector(List<Dot> dots);
 
   Equation createApproximatedFunction(List<double> factors);
+
+  double calculateSumOfSquaredDeviations(List<Dot> dots, Equation equation) =>
+      dots.fold(
+          0.0,
+          (previousValue, dot) =>
+              previousValue + pow(equation.compute(dot.x) - dot.y, 2));
 
   double sumByX(List<Dot> dots) =>
       dots.fold(0.0, (previousValue, dot) => previousValue + dot.x);

@@ -30,7 +30,33 @@ class MainScreen extends GetView<MainScreenState> {
             flex: 7,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: LineChart(_drawingController.chartData),
+              child: Column(
+                children: [
+                  Expanded(child: LineChart(_drawingController.chartData)),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: _drawingController.hideAllApproxes,
+                          child: Text("Hide all approxes"),
+                        ),
+                        SizedBox(width: 20),
+                        ElevatedButton(
+                          onPressed: _drawingController.showOnlyBestApprox,
+                          child: Text("Show only best approx"),
+                        ),
+                        SizedBox(width: 20),
+                        ElevatedButton(
+                          onPressed: _drawingController.showAllApproxes,
+                          child: Text("Show all approxes"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

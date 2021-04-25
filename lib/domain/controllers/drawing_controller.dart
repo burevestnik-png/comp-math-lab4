@@ -1,3 +1,5 @@
+import 'package:comp_math_lab4/domain/approximations/approximation.dart';
+import 'package:comp_math_lab4/domain/controllers/computation_controller.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/models/equation.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -7,7 +9,12 @@ import 'package:get/get.dart';
 /// [
 ///   axisX
 ///   axisY
-///   currentEquation
+///   currentDots
+///   linearApprox
+///   quadraticApprox
+///   powApprox
+///   expApprox
+///   logApprox
 /// ]
 class DrawingController extends GetxController {
   static const _kPaddingValue = 5;
@@ -17,9 +24,17 @@ class DrawingController extends GetxController {
   static const _kAxisXPlace = 0;
   static const _kAxisYPlace = 1;
   static const _kTableGraphPlace = 2;
+  static const _kBestApproxPlace = 3;
+
+  var currentMinX = _kDefaultMin;
+  var currentMaxX = _kDefaultMax;
+  var currentMinY = _kDefaultMin;
+  var currentMaxY = _kDefaultMax;
+
+  final Map<int, LineChartBarData> graphCache = {};
 
   late final LineChartData chartData;
-  late final List<LineChartBarData> _lines = [];
+  final List<LineChartBarData> _lines = [];
 
   @override
   void onInit() {
@@ -36,7 +51,12 @@ class DrawingController extends GetxController {
       maxY: _kDefaultMax,
       minX: _kDefaultMin,
       minY: _kDefaultMin,
-      lineTouchData: LineTouchData(enabled: false),
+      lineTouchData: LineTouchData(
+        enabled: false,
+        touchTooltipData:
+            LineTouchTooltipData(tooltipBgColor: Colors.white.withOpacity(0.8)),
+        handleBuiltInTouches: true,
+      ),
       titlesData: FlTitlesData(
         show: true,
         bottomTitles: _drawTitles(),
@@ -52,40 +72,94 @@ class DrawingController extends GetxController {
     if (_lines.asMap().containsKey(_kTableGraphPlace))
       _lines.removeAt(_kTableGraphPlace);
 
+    currentMinX = dots.minX().x;
+    currentMaxX = dots.maxX().x;
+    currentMinY = dots.minY().y;
+    currentMaxY = dots.maxY().y;
+
+    updateGridSize();
+
     _lines.insert(
       _kTableGraphPlace,
       LineChartBarData(
         spots: dots.toFLSpots(),
-        isCurved: true,
-        dotData: FlDotData(
-          show: false,
-        ),
+        isCurved: false,
+        dotData: FlDotData(show: true),
       ),
     );
+
+    if (_lines.asMap().containsKey(_kBestApproxPlace)) {
+      _lines.removeRange(_kBestApproxPlace, _kBestApproxPlace + 5);
+    }
+  }
+
+  void drawApproxes(
+    Map<Approximations, ApproximationResult> approxes,
+    Approximations bestApproxType,
+  ) {
+    if (_lines.asMap().containsKey(_kBestApproxPlace)) {
+      _lines.removeRange(_kBestApproxPlace, _kBestApproxPlace + 5);
+    }
+
+    approxes.forEach((type, result) {
+      if (type == bestApproxType) {
+        drawGraph(
+          result.approxFunction,
+          min: currentMinX,
+          max: currentMaxX,
+          isAccent: true,
+        );
+      } else {
+        drawGraph(
+          result.approxFunction,
+          min: currentMinX,
+          max: currentMaxX,
+          isGreyed: true,
+        );
+      }
+    });
+  }
+
+  void hideAllApproxes() =>
+      _hideGraphs(_kBestApproxPlace, _kBestApproxPlace + 5);
+
+  void showAllApproxes() =>
+      _showGraphs(_kBestApproxPlace, _kBestApproxPlace + 5);
+
+  void showOnlyBestApprox() {
+    if (graphCache.isEmpty) {
+      _hideGraphs(_kBestApproxPlace, _kBestApproxPlace + 4);
+    } else
+      _showGraphs(_kBestApproxPlace, _kBestApproxPlace);
+  }
+
+  void _showGraphs(int from, int to) {
+    if (graphCache.isEmpty) return;
+
+    for (var i = from; i < to; i++) {
+      _lines.add(graphCache[i]!);
+      graphCache.remove(i);
+    }
+  }
+
+  void _hideGraphs(int from, int to) {
+    if (graphCache.isNotEmpty) return;
+
+    for (var i = from; i < to; i++) {
+      graphCache[i] = _lines[i];
+    }
+
+    _lines.removeRange(from, to);
   }
 
   void drawGraph(
     Equation equation, {
+    bool isAccent = false,
+    bool isGreyed = false,
     double min = _kDefaultMin,
     double max = _kDefaultMax,
     double accuracy = 0.01,
   }) {
-    if (_lines.asMap().containsKey(_kTableGraphPlace))
-      _lines.removeAt(_kTableGraphPlace);
-
-    /*if ((equation.min(min, max).y - chartData.minY).abs() > _kPaddingValue) {
-      var previousMinY = chartData.minY;
-      chartData.minY = equation.min(min, max).y - _kPaddingValue;
-      chartData.maxY = chartData.maxY - previousMinY;
-
-      List<FlSpot> newYAxisDots = [];
-      for (var i = chartData.minY; i <= chartData.maxY; i++) {
-        newYAxisDots.add(FlSpot(0, i));
-      }
-      chartData.lineBarsData[1].spots.clear();
-      chartData.lineBarsData[1].spots.addAll(newYAxisDots);
-    }*/
-
     List<FlSpot> dots = [];
     for (var i = min; i < max; i += accuracy) {
       if (equation.compute(i) < gridMaxY && equation.compute(i) > gridMinY) {
@@ -95,11 +169,27 @@ class DrawingController extends GetxController {
 
     _lines.add(LineChartBarData(
       spots: dots,
+      colors: [
+        if (isAccent) Colors.black,
+        if (isGreyed) Colors.grey,
+      ],
       isCurved: true,
       dotData: FlDotData(
         show: false,
       ),
+      dashArray: isGreyed ? [3, 2] : null,
     ));
+  }
+
+  void updateGridSize() {
+    chartData.minX = (currentMinX - _kPaddingValue).ceilToDouble();
+    chartData.maxX = (currentMaxX + _kPaddingValue).ceilToDouble();
+
+    chartData.maxY = (currentMaxY + _kPaddingValue).ceilToDouble();
+    chartData.minY = (currentMinY - _kPaddingValue).ceilToDouble();
+
+    _drawAxisX();
+    _drawAxisY();
   }
 
   void _drawAxisY() =>
@@ -127,9 +217,9 @@ class DrawingController extends GetxController {
     if (_lines.asMap().containsKey(kPlace)) _lines.removeAt(kPlace);
 
     List<FlSpot> dots = [];
-    for (var i = from; i <= to; i++) {
-      dots.add(kPlace == _kAxisXPlace ? FlSpot(i, 0) : FlSpot(0, i));
-    }
+    dots.addAll(kPlace == _kAxisXPlace
+        ? [FlSpot(from, 0), FlSpot(to, 0)]
+        : [FlSpot(0, from), FlSpot(0, to)]);
 
     _lines.insert(kPlace, defaultStyledAxis(dots));
   }
@@ -165,11 +255,11 @@ class DrawingController extends GetxController {
         },
       );
 
-  get gridMinX => chartData.minX;
+  double get gridMinX => chartData.minX;
 
-  get gridMaxX => chartData.maxX;
+  double get gridMaxX => chartData.maxX;
 
-  get gridMinY => chartData.minY;
+  double get gridMinY => chartData.minY;
 
-  get gridMaxY => chartData.maxY;
+  double get gridMaxY => chartData.maxY;
 }

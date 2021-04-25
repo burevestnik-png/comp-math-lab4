@@ -4,6 +4,7 @@ import 'package:comp_math_lab4/domain/approximations/linearly_dependant/linear_a
 import 'package:comp_math_lab4/domain/approximations/linearly_dependant/logarithmic_approximation.dart';
 import 'package:comp_math_lab4/domain/approximations/linearly_dependant/pow_approximation.dart';
 import 'package:comp_math_lab4/domain/approximations/quadratic_approximation.dart';
+import 'package:comp_math_lab4/domain/controllers/drawing_controller.dart';
 import 'package:comp_math_lab4/domain/controllers/log_controller.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
 import 'package:comp_math_lab4/domain/models/equation.dart';
@@ -26,6 +27,7 @@ class ApproximationResult {
 
 class ComputationController extends GetxController {
   final logger = Get.find<LogController>();
+  final drawController = Get.find<DrawingController>();
 
   final approximationFunctions = {
     Approximations.LINEAR: LinearApproximation(),
@@ -68,5 +70,7 @@ class ComputationController extends GetxController {
     var bestApprox = findBestApprox(lastApproxStandardDeviations);
     logger.println("Best approx is in ${bestApprox.key}");
     logger.println("And equals: ${bestApprox.value.standardDeviation}");
+
+    drawController.drawApproxes(lastApproxStandardDeviations, bestApprox.key);
   }
 }

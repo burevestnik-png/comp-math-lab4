@@ -24,7 +24,19 @@ class DrawingController extends GetxController {
   static const _kAxisXPlace = 0;
   static const _kAxisYPlace = 1;
   static const _kTableGraphPlace = 2;
-  static const _kBestApproxPlace = 3;
+  static const _kLinearApproxPlace = 3;
+  static const _kQuadraticApproxPlace = 4;
+  static const _kPowApproxPlace = 5;
+  static const _kExpApproxPlace = 6;
+  static const _kLogApproxPlace = 7;
+
+  final approxPlaces = {
+    Approximations.LINEAR: _kLinearApproxPlace,
+    Approximations.QUADRATIC: _kQuadraticApproxPlace,
+    Approximations.POW: _kPowApproxPlace,
+    Approximations.EXPONENTIAL: _kExpApproxPlace,
+    Approximations.LOGARITHMIC: _kLogApproxPlace,
+  };
 
   var currentMinX = _kDefaultMin;
   var currentMaxX = _kDefaultMax;
@@ -88,8 +100,8 @@ class DrawingController extends GetxController {
       ),
     );
 
-    if (_lines.asMap().containsKey(_kBestApproxPlace)) {
-      _lines.removeRange(_kBestApproxPlace, _kBestApproxPlace + 5);
+    if (_lines.asMap().containsKey(_kLinearApproxPlace)) {
+      _lines.removeRange(_kLinearApproxPlace, _kLinearApproxPlace + 5);
     }
   }
 
@@ -97,8 +109,8 @@ class DrawingController extends GetxController {
     Map<Approximations, ApproximationResult> approxes,
     Approximations bestApproxType,
   ) {
-    if (_lines.asMap().containsKey(_kBestApproxPlace)) {
-      _lines.removeRange(_kBestApproxPlace, _kBestApproxPlace + 5);
+    if (_lines.asMap().containsKey(_kLinearApproxPlace)) {
+      _lines.removeRange(_kLinearApproxPlace, _kLinearApproxPlace + 5);
     }
 
     approxes.forEach((type, result) {
@@ -121,30 +133,27 @@ class DrawingController extends GetxController {
   }
 
   void hideAllApproxes() =>
-      _hideGraphs(_kBestApproxPlace, _kBestApproxPlace + 5);
+      _hideGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
 
   void showAllApproxes() =>
-      _showGraphs(_kBestApproxPlace, _kBestApproxPlace + 5);
+      _showGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
 
-  void showOnlyBestApprox() {
-    if (graphCache.isEmpty) {
-      _hideGraphs(_kBestApproxPlace, _kBestApproxPlace + 4);
-    } else
-      _showGraphs(_kBestApproxPlace, _kBestApproxPlace);
+  void showOnlyOneApprox(Approximations type) {
+    print(type);
+    // _hideGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
+    // _showGraphs(approxPlaces[type]!, approxPlaces[type]!);
   }
 
   void _showGraphs(int from, int to) {
-    if (graphCache.isEmpty) return;
-
     for (var i = from; i < to; i++) {
-      _lines.add(graphCache[i]!);
-      graphCache.remove(i);
+      if (graphCache.containsKey(i)) {
+        _lines.insert(i, graphCache[i]!);
+        graphCache.remove(i);
+      }
     }
   }
 
   void _hideGraphs(int from, int to) {
-    if (graphCache.isNotEmpty) return;
-
     for (var i = from; i < to; i++) {
       graphCache[i] = _lines[i];
     }

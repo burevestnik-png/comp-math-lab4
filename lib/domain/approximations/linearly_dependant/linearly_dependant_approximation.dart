@@ -7,23 +7,17 @@ abstract class LinearlyDependantApproximation extends Approximation {
   LinearlyDependantApproximation(Approximations type) : super(type);
 
   @override
-  double process(List<Dot> dots) {
-    var solutions = solveLinearSystem(dots);
-    if (solutions == null) {
-      logger.println("No solutions or unlimited solutions");
-      return -1;
-    }
-    print('Solutions: $solutions');
-
-    final phi = createApproximatedFunction(solutions);
-    print('Phi: $phi');
-    final sumOfDeviationSquares = calculateSumOfSquaredDeviations(dots, phi);
-    print('S: $sumOfDeviationSquares');
+  void processDuring(List<Dot> dots) {
     final r = calcPearsonCoefficient(dots);
-    print('R: $r');
-
-    return sqrt(sumOfDeviationSquares / dots.length.toDouble());
+    print('r: $r');
   }
+
+  List<double>? solveLinearSystem(List<Dot> dots) {
+    var modifiedDots = modifyDots(dots);
+    return super.solveLinearSystem(modifiedDots);
+  }
+
+  List<Dot> modifyDots(List<Dot> dots) => dots;
 
   @override
   List<List<double>> createMatrix(List<Dot> dots) {

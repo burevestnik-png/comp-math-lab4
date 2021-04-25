@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:comp_math_lab4/domain/approximations/approx_lifecycle_interface.dart';
 import 'package:comp_math_lab4/domain/controllers/log_controller.dart';
 import 'package:comp_math_lab4/domain/math/linear_system_solver.dart';
 import 'package:comp_math_lab4/domain/models/dot.dart';
@@ -14,7 +15,7 @@ enum Approximations {
   LOGARITHMIC,
 }
 
-abstract class Approximation {
+abstract class Approximation extends IApproxLifecycle {
   final logger = Get.find<LogController>();
   final Approximations type;
 
@@ -32,6 +33,8 @@ abstract class Approximation {
     print('Phi: $phi');
     final sumOfDeviationSquares = calculateSumOfSquaredDeviations(dots, phi);
     print('S: $sumOfDeviationSquares');
+
+    processDuring(dots);
 
     return sqrt(sumOfDeviationSquares / dots.length.toDouble());
   }

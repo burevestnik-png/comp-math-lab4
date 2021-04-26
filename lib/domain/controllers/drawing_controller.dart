@@ -84,6 +84,10 @@ class DrawingController extends GetxController {
     if (_lines.asMap().containsKey(_kTableGraphPlace))
       _lines.removeAt(_kTableGraphPlace);
 
+    if (dots.isEmpty) {
+      return;
+    }
+
     currentMinX = dots.minX().x;
     currentMaxX = dots.maxX().x;
     currentMinY = dots.minY().y;
@@ -137,12 +141,6 @@ class DrawingController extends GetxController {
 
   void showAllApproxes() =>
       _showGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
-
-  void showOnlyOneApprox(Approximations type) {
-    print(type);
-    // _hideGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
-    // _showGraphs(approxPlaces[type]!, approxPlaces[type]!);
-  }
 
   void _showGraphs(int from, int to) {
     for (var i = from; i < to; i++) {

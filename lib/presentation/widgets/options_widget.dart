@@ -26,7 +26,7 @@ class Options extends GetView<MainScreenState> {
           Divider(),
           ElevatedButton(
             child: Text("Compute"),
-            onPressed: () => controller.compute(),
+            onPressed: controller.dots.isEmpty ? null : controller.compute,
           ),
           Divider(),
           OptionLogger(),

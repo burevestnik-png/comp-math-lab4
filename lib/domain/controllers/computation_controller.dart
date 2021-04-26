@@ -51,7 +51,8 @@ class ComputationController extends GetxController {
     var typeOfBest = Approximations.LINEAR;
 
     lastResults.forEach((type, result) {
-      if (result.standardDeviation < best.standardDeviation) {
+      if (result.standardDeviation < best.standardDeviation &&
+          result.approxFunction.isNotEmpty) {
         best = result;
         typeOfBest = type;
       }

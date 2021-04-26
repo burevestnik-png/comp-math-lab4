@@ -65,4 +65,8 @@ class Equation {
 
   @override
   int get hashCode => _tokens.hashCode;
+
+  bool get isEmpty => _tokens.isEmpty;
+
+  bool get isNotEmpty => _tokens.isNotEmpty;
 }

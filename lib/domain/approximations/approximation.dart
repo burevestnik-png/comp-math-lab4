@@ -30,6 +30,14 @@ abstract class Approximation extends IApproxLifecycle {
       logger.println("No solutions or unlimited solutions");
       return ApproximationResult.empty();
     }
+
+    for (var solution in solutions) {
+      if (solution.isNaN) {
+        logger.println("No solutions or unlimited solutions");
+        return ApproximationResult.empty();
+      }
+    }
+
     logger.println("Solutions of SLE: $solutions");
 
     final phi = createApproximatedFunction(solutions);

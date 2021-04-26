@@ -24,19 +24,9 @@ class DrawingController extends GetxController {
   static const _kAxisXPlace = 0;
   static const _kAxisYPlace = 1;
   static const _kTableGraphPlace = 2;
-  static const _kLinearApproxPlace = 3;
-  static const _kQuadraticApproxPlace = 4;
-  static const _kPowApproxPlace = 5;
-  static const _kExpApproxPlace = 6;
-  static const _kLogApproxPlace = 7;
+  static const _kApproxStartPlace = 3;
 
-  final approxPlaces = {
-    Approximations.LINEAR: _kLinearApproxPlace,
-    Approximations.QUADRATIC: _kQuadraticApproxPlace,
-    Approximations.POW: _kPowApproxPlace,
-    Approximations.EXPONENTIAL: _kExpApproxPlace,
-    Approximations.LOGARITHMIC: _kLogApproxPlace,
-  };
+  var _maxApprox = _kApproxStartPlace;
 
   var currentMinX = _kDefaultMin;
   var currentMaxX = _kDefaultMax;
@@ -81,10 +71,17 @@ class DrawingController extends GetxController {
   void drawTableGraph(
     List<Dot> dots,
   ) {
+    _removeApproxes();
+
     if (_lines.asMap().containsKey(_kTableGraphPlace))
       _lines.removeAt(_kTableGraphPlace);
 
     if (dots.isEmpty) {
+      currentMinX = _kDefaultMin;
+      currentMaxX = _kDefaultMax;
+      currentMinY = _kDefaultMin;
+      currentMaxY = _kDefaultMax;
+      updateGridSize();
       return;
     }
 
@@ -103,44 +100,46 @@ class DrawingController extends GetxController {
         dotData: FlDotData(show: true),
       ),
     );
+  }
 
-    if (_lines.asMap().containsKey(_kLinearApproxPlace)) {
-      _lines.removeRange(_kLinearApproxPlace, _kLinearApproxPlace + 5);
+  void _removeApproxes() {
+    if (_lines.asMap().containsKey(_kApproxStartPlace)) {
+      _lines.removeRange(_kApproxStartPlace, _maxApprox);
     }
+    _maxApprox = _kApproxStartPlace;
   }
 
   void drawApproxes(
     Map<Approximations, ApproximationResult> approxes,
     Approximations bestApproxType,
   ) {
-    if (_lines.asMap().containsKey(_kLinearApproxPlace)) {
-      _lines.removeRange(_kLinearApproxPlace, _kLinearApproxPlace + 5);
-    }
+    _removeApproxes();
 
     approxes.forEach((type, result) {
-      if (type == bestApproxType) {
-        drawGraph(
-          result.approxFunction,
-          min: currentMinX,
-          max: currentMaxX,
-          isAccent: true,
-        );
-      } else {
-        drawGraph(
-          result.approxFunction,
-          min: currentMinX,
-          max: currentMaxX,
-          isGreyed: true,
-        );
+      if (result.approxFunction.isNotEmpty) {
+        _maxApprox++;
+        if (type == bestApproxType) {
+          drawGraph(
+            result.approxFunction,
+            min: currentMinX,
+            max: currentMaxX,
+            isAccent: true,
+          );
+        } else {
+          drawGraph(
+            result.approxFunction,
+            min: currentMinX,
+            max: currentMaxX,
+            isGreyed: true,
+          );
+        }
       }
     });
   }
 
-  void hideAllApproxes() =>
-      _hideGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
+  void hideAllApproxes() => _hideGraphs(_kApproxStartPlace, _maxApprox);
 
-  void showAllApproxes() =>
-      _showGraphs(_kLinearApproxPlace, _kLinearApproxPlace + 5);
+  void showAllApproxes() => _showGraphs(_kApproxStartPlace, _maxApprox);
 
   void _showGraphs(int from, int to) {
     for (var i = from; i < to; i++) {

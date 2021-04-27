@@ -90,8 +90,8 @@ To get a local copy up and running follow these simple steps.
 ## Usage
 UI samples:
 
-[1](./docs/1.png)
-[2](./docs/2.png)
+![1](./docs/1.png)
+![2](./docs/2.png)
 
 
 _For more examples, please refer to the [Documentation](https://flutter.dev/docs)_

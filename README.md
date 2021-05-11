@@ -17,7 +17,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/burevestnik-png/comp-math-lab4">
     <img src="images/yarki.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -77,7 +77,7 @@ To get a local copy up and running follow these simple steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/burevestnik-png/comp-math-lab4.git
    ```
 2. Install pub.dev packages
    ```sh
@@ -121,7 +121,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Yaroslav Kulinich - yaroslav1630@hmail.com
+Yaroslav Kulinich - yaroslav1630@gmail.com
 
 Project Link: [https://github.com/burevestnik-png/comp-math-lab4](https://github.com/burevestnik-png/comp-math-lab4)
 
